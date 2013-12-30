@@ -12,12 +12,61 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    
+    [self setupFolders];
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
+    
+    self.fileManagerVC = [[FileManagerViewController alloc] initWithNibName:@"FileManagerViewController_iPhone" bundle:nil];
+    
+    self.navCtrl = [[UINavigationController alloc] initWithRootViewController:self.fileManagerVC];
+    
+    [self.window setRootViewController:self.navCtrl];
+    
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
+   
+    
     return YES;
 }
+
+-(void)setupFolders{
+    
+    
+    
+    NSString *file11InApp = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"11.png"];
+    NSString *file12InApp = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"12.png"];
+    NSString *file13InApp = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"13.png"];
+    
+    
+    
+    NSArray *documentPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	NSString *documentsDir = [documentPaths objectAtIndex:0];
+	
+	NSString *file11DocPath = [documentsDir stringByAppendingPathComponent:@"11.png"];
+    NSString *file12DocPath = [documentsDir stringByAppendingPathComponent:@"12.png"];
+    NSString *file13DocPath = [documentsDir stringByAppendingPathComponent:@"13.png"];
+    
+    
+    
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+
+    [fileManager copyItemAtPath:file11InApp toPath:file11DocPath error:nil];
+    [fileManager copyItemAtPath:file12InApp toPath:file12DocPath error:nil];
+    [fileManager copyItemAtPath:file13InApp toPath:file13DocPath error:nil];
+     NSError * error;
+    
+    [fileManager createDirectoryAtPath:[NSString stringWithFormat:@"%@/one",documentsDir] withIntermediateDirectories:NO attributes:nil error:&error];
+    
+    [fileManager createDirectoryAtPath:[NSString stringWithFormat:@"%@/one/insideone",documentsDir] withIntermediateDirectories:NO attributes:nil error:&error];
+    [fileManager createDirectoryAtPath:[NSString stringWithFormat:@"%@/two",documentsDir] withIntermediateDirectories:NO attributes:nil error:&error];
+    
+    
+    
+}
+
+
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {

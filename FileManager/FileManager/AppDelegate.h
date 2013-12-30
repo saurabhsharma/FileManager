@@ -7,9 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "FileManagerViewController.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-
+@property (strong, nonatomic) FileManagerViewController *fileManagerVC;
+@property (strong, nonatomic) UINavigationController *navCtrl;
 @end

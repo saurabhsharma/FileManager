@@ -19,6 +19,13 @@
 		DCF362C3187176F800E10AB7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCF362AB187176F800E10AB7 /* UIKit.framework */; };
 		DCF362CB187176F800E10AB7 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = DCF362C9187176F800E10AB7 /* InfoPlist.strings */; };
 		DCF362CD187176F800E10AB7 /* FileManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DCF362CC187176F800E10AB7 /* FileManagerTests.m */; };
+		DCF362D91871780300E10AB7 /* FileManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DCF362D71871780300E10AB7 /* FileManagerViewController.m */; };
+		DCF362DA1871780300E10AB7 /* FileManagerViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = DCF362D81871780300E10AB7 /* FileManagerViewController_iPhone.xib */; };
+		DCF362DD18717F5600E10AB7 /* FileManagerTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DCF362DC18717F5600E10AB7 /* FileManagerTableCell.m */; };
+		DCF362DF18717F8200E10AB7 /* FileManagerTableCell_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = DCF362DE18717F8200E10AB7 /* FileManagerTableCell_iPhone.xib */; };
+		DCF362E31871881800E10AB7 /* 11.png in Resources */ = {isa = PBXBuildFile; fileRef = DCF362E01871881800E10AB7 /* 11.png */; };
+		DCF362E41871881800E10AB7 /* 12.png in Resources */ = {isa = PBXBuildFile; fileRef = DCF362E11871881800E10AB7 /* 12.png */; };
+		DCF362E51871881800E10AB7 /* 13.png in Resources */ = {isa = PBXBuildFile; fileRef = DCF362E21871881800E10AB7 /* 13.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +55,15 @@
 		DCF362C8187176F800E10AB7 /* FileManagerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "FileManagerTests-Info.plist"; sourceTree = "<group>"; };
 		DCF362CA187176F800E10AB7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		DCF362CC187176F800E10AB7 /* FileManagerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileManagerTests.m; sourceTree = "<group>"; };
+		DCF362D61871780300E10AB7 /* FileManagerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileManagerViewController.h; sourceTree = "<group>"; };
+		DCF362D71871780300E10AB7 /* FileManagerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileManagerViewController.m; sourceTree = "<group>"; };
+		DCF362D81871780300E10AB7 /* FileManagerViewController_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FileManagerViewController_iPhone.xib; sourceTree = "<group>"; };
+		DCF362DB18717F5600E10AB7 /* FileManagerTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileManagerTableCell.h; sourceTree = "<group>"; };
+		DCF362DC18717F5600E10AB7 /* FileManagerTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileManagerTableCell.m; sourceTree = "<group>"; };
+		DCF362DE18717F8200E10AB7 /* FileManagerTableCell_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FileManagerTableCell_iPhone.xib; sourceTree = "<group>"; };
+		DCF362E01871881800E10AB7 /* 11.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 11.png; sourceTree = "<group>"; };
+		DCF362E11871881800E10AB7 /* 12.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 12.png; sourceTree = "<group>"; };
+		DCF362E21871881800E10AB7 /* 13.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 13.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +93,9 @@
 		DCF3629B187176F800E10AB7 = {
 			isa = PBXGroup;
 			children = (
+				DCF362E01871881800E10AB7 /* 11.png */,
+				DCF362E11871881800E10AB7 /* 12.png */,
+				DCF362E21871881800E10AB7 /* 13.png */,
 				DCF362AD187176F800E10AB7 /* FileManager */,
 				DCF362C6187176F800E10AB7 /* FileManagerTests */,
 				DCF362A6187176F800E10AB7 /* Frameworks */,
@@ -109,6 +128,12 @@
 			children = (
 				DCF362B6187176F800E10AB7 /* AppDelegate.h */,
 				DCF362B7187176F800E10AB7 /* AppDelegate.m */,
+				DCF362D61871780300E10AB7 /* FileManagerViewController.h */,
+				DCF362D71871780300E10AB7 /* FileManagerViewController.m */,
+				DCF362D81871780300E10AB7 /* FileManagerViewController_iPhone.xib */,
+				DCF362DB18717F5600E10AB7 /* FileManagerTableCell.h */,
+				DCF362DC18717F5600E10AB7 /* FileManagerTableCell.m */,
+				DCF362DE18717F8200E10AB7 /* FileManagerTableCell_iPhone.xib */,
 				DCF362B9187176F800E10AB7 /* Images.xcassets */,
 				DCF362AE187176F800E10AB7 /* Supporting Files */,
 			);
@@ -219,8 +244,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DCF362E41871881800E10AB7 /* 12.png in Resources */,
+				DCF362E31871881800E10AB7 /* 11.png in Resources */,
 				DCF362B2187176F800E10AB7 /* InfoPlist.strings in Resources */,
+				DCF362DF18717F8200E10AB7 /* FileManagerTableCell_iPhone.xib in Resources */,
+				DCF362DA1871780300E10AB7 /* FileManagerViewController_iPhone.xib in Resources */,
 				DCF362BA187176F800E10AB7 /* Images.xcassets in Resources */,
+				DCF362E51871881800E10AB7 /* 13.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -239,8 +269,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DCF362DD18717F5600E10AB7 /* FileManagerTableCell.m in Sources */,
 				DCF362B8187176F800E10AB7 /* AppDelegate.m in Sources */,
 				DCF362B4187176F800E10AB7 /* main.m in Sources */,
+				DCF362D91871780300E10AB7 /* FileManagerViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -364,7 +396,9 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FileManager/FileManager-Prefix.pch";
 				INFOPLIST_FILE = "FileManager/FileManager-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -377,7 +411,9 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FileManager/FileManager-Prefix.pch";
 				INFOPLIST_FILE = "FileManager/FileManager-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
