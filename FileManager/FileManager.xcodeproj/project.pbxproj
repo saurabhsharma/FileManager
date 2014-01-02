@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DC125797187599EA0010E4E6 /* blue_checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = DC125795187599EA0010E4E6 /* blue_checkmark.png */; };
+		DC125798187599EA0010E4E6 /* grey_checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = DC125796187599EA0010E4E6 /* grey_checkmark.png */; };
 		DC40C69718754D5100B0F8AA /* FileManagerTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC40C69618754D5100B0F8AA /* FileManagerTableCell.m */; };
 		DC40C69B18754DFE00B0F8AA /* FileManagerTableCell_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC40C69A18754DFE00B0F8AA /* FileManagerTableCell_iPhone.xib */; };
 		DCF362A8187176F800E10AB7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCF362A7187176F800E10AB7 /* Foundation.framework */; };
@@ -39,6 +41,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		DC125795187599EA0010E4E6 /* blue_checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blue_checkmark.png; sourceTree = "<group>"; };
+		DC125796187599EA0010E4E6 /* grey_checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grey_checkmark.png; sourceTree = "<group>"; };
 		DC40C69518754D5100B0F8AA /* FileManagerTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileManagerTableCell.h; sourceTree = "<group>"; };
 		DC40C69618754D5100B0F8AA /* FileManagerTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileManagerTableCell.m; sourceTree = "<group>"; };
 		DC40C69A18754DFE00B0F8AA /* FileManagerTableCell_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FileManagerTableCell_iPhone.xib; sourceTree = "<group>"; };
@@ -126,6 +130,8 @@
 		DCF362AD187176F800E10AB7 /* FileManager */ = {
 			isa = PBXGroup;
 			children = (
+				DC125795187599EA0010E4E6 /* blue_checkmark.png */,
+				DC125796187599EA0010E4E6 /* grey_checkmark.png */,
 				DCF362B6187176F800E10AB7 /* AppDelegate.h */,
 				DCF362B7187176F800E10AB7 /* AppDelegate.m */,
 				DCF362D61871780300E10AB7 /* FileManagerViewController.h */,
@@ -248,7 +254,9 @@
 				DCF362E31871881800E10AB7 /* 11.png in Resources */,
 				DCF362B2187176F800E10AB7 /* InfoPlist.strings in Resources */,
 				DCF362DA1871780300E10AB7 /* FileManagerViewController_iPhone.xib in Resources */,
+				DC125798187599EA0010E4E6 /* grey_checkmark.png in Resources */,
 				DC40C69B18754DFE00B0F8AA /* FileManagerTableCell_iPhone.xib in Resources */,
+				DC125797187599EA0010E4E6 /* blue_checkmark.png in Resources */,
 				DCF362BA187176F800E10AB7 /* Images.xcassets in Resources */,
 				DCF362E51871881800E10AB7 /* 13.png in Resources */,
 			);

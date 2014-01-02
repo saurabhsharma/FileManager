@@ -45,8 +45,6 @@
         self.path = [paths objectAtIndex:0];
     }
     
-    
-    
     NSError * error;
     
     NSFileManager *fm = [NSFileManager defaultManager];
@@ -55,22 +53,15 @@
                       includingPropertiesForKeys:[NSArray arrayWithObjects:NSURLPathKey,NSURLNameKey, NSURLIsDirectoryKey, NSURLContentModificationDateKey, nil]
                                          options:NSDirectoryEnumerationSkipsHiddenFiles
                                            error:&error];
+    
+    NSLog(@"Directory Contents = /n %@",directoryContents);
+    
+    UIBarButtonItem *optionsBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(optBtnAction:)];
+    [optionsBtn setTag:1];
+    [self.navigationItem setRightBarButtonItem:optionsBtn];
    
     
-//    for (NSURL *filePath in directoryContents){
-//        
-//        NSLog(@"file path url - %@", filePath);
-//        NSString *modificationDate;
-//        
-//        [filePath getResourceValue:&modificationDate forKey:NSURLContentModificationDateKey error:nil];
-//        
-//        NSLog(@"modificationDate = %@",modificationDate);
-//    }
-    
-    
-     NSLog(@"Directory Contents = /n %@",directoryContents);
-   
-    
+    self.selectedRows = [[NSMutableArray alloc] init];
     
 }
 
@@ -80,6 +71,40 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+
+-(IBAction)optBtnAction:(id) sender{
+    
+    // if the right bar button item is "options button"
+    if ([(UIBarButtonItem *)sender tag] == 1){
+        
+        UIBarButtonItem *optionsBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(optBtnAction:)];
+        [optionsBtn setTag:2];
+        [self.navigationItem setRightBarButtonItem:optionsBtn];
+        
+        
+        [self.toolBar setHidden:NO];
+        
+        
+    }
+    else if ([(UIBarButtonItem *)sender tag] == 2){
+
+        UIBarButtonItem *optionsBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(optBtnAction:)];
+        [optionsBtn setTag:1];
+        [self.navigationItem setRightBarButtonItem:optionsBtn];
+
+        [self.toolBar setHidden:YES];
+        
+    }
+    else {
+        
+        
+    }
+    
+    [self.tblView reloadData];
+    
+}
+
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -123,8 +148,22 @@
     [[directoryContents objectAtIndex:indexPath.row] getResourceValue:&isDirectory forKey:NSURLIsDirectoryKey error:nil];
     
     if ([isDirectory boolValue]){
+        cell.typeLbl.text = @"folder";
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    }
+    
+    if (!self.toolBar.hidden){
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        [cell.checkmarkImg setImage:[UIImage imageNamed:@"grey_checkmark"]];
+    }
+    else{
         
-         cell.typeLbl.text = @"folder";
+        [cell.checkmarkImg setImage:nil];
+        
+        if ([isDirectory boolValue]){
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        }
+        
     }
     
     return cell;
@@ -137,7 +176,7 @@
     NSString *isDirectory;
     [[directoryContents objectAtIndex:indexPath.row] getResourceValue:&isDirectory forKey:NSURLIsDirectoryKey error:nil];
     
-    if ([isDirectory boolValue]){
+    if ([isDirectory boolValue] && self.toolBar.hidden){
         
         NSString *path;
         [[directoryContents objectAtIndex:indexPath.row] getResourceValue:&path forKey:NSURLPathKey error:nil];
@@ -146,6 +185,20 @@
         fmvc.path = path;
         [self.navigationController pushViewController:fmvc animated:YES];
 
+    }
+    
+    if (!self.toolBar.hidden){
+
+        FileManagerTableCell *cell = (FileManagerTableCell *)[tableView cellForRowAtIndexPath:indexPath];
+        if (![self.selectedRows containsObject:indexPath]){
+            [self.selectedRows addObject:indexPath];
+            [cell.checkmarkImg setImage:[UIImage imageNamed:@"blue_checkmark"]];
+        }
+        else {
+            [self.selectedRows removeObject:indexPath];
+            [cell.checkmarkImg setImage:[UIImage imageNamed:@"grey_checkmark"]];
+        }
+        
     }
     
 }

@@ -13,4 +13,7 @@
 @property (nonatomic, strong) IBOutlet UILabel *nameLbl;
 @property (nonatomic, strong) IBOutlet UIImageView *typeImg;
 @property (nonatomic, strong) IBOutlet UILabel *typeLbl;
+@property (nonatomic, strong) IBOutlet UIImageView *checkmarkImg;
+@property (nonatomic) BOOL checked;
+
 @end

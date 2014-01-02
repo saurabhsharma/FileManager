@@ -17,6 +17,10 @@
                         <rect key="frame" x="6" y="5" width="50" height="50"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     </imageView>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jbi-8g-qcc">
+                        <rect key="frame" x="274" y="5" width="50" height="50"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    </imageView>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="914-fy-kHx">
                         <rect key="frame" x="69" y="5" width="245" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -34,6 +38,7 @@
                 </subviews>
             </tableViewCellContentView>
             <connections>
+                <outlet property="checkmarkImg" destination="jbi-8g-qcc" id="6cK-lP-APY"/>
                 <outlet property="nameLbl" destination="914-fy-kHx" id="Rve-Ru-yrA"/>
                 <outlet property="typeImg" destination="6c3-Su-58o" id="9Pf-C2-xKv"/>
                 <outlet property="typeLbl" destination="4gg-vK-bOY" id="cGz-Sr-2EI"/>

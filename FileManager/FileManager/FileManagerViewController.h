@@ -16,6 +16,9 @@
 
 @property (strong, nonatomic) NSString *path;
 @property (strong, nonatomic) IBOutlet UITableView *tblView;
+@property (strong, nonatomic) IBOutlet UIToolbar *toolBar;
+@property (strong, nonatomic) NSMutableArray *selectedRows;
 
+-(IBAction)optBtnAction:(id) sender;
 
 @end
