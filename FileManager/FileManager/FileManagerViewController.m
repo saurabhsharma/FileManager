@@ -45,14 +45,14 @@
         self.path = [paths objectAtIndex:0];
     }
     
-    NSLog(@"Path = /n %@",self.path);
+    
     
     NSError * error;
     
     NSFileManager *fm = [NSFileManager defaultManager];
     NSURL *directoryURL = [NSURL fileURLWithPath:self.path];
     directoryContents = [fm contentsOfDirectoryAtURL:directoryURL
-                      includingPropertiesForKeys:[NSArray arrayWithObjects:NSURLNameKey, NSURLIsDirectoryKey, NSURLContentModificationDateKey, nil]
+                      includingPropertiesForKeys:[NSArray arrayWithObjects:NSURLPathKey,NSURLNameKey, NSURLIsDirectoryKey, NSURLContentModificationDateKey, nil]
                                          options:NSDirectoryEnumerationSkipsHiddenFiles
                                            error:&error];
    
@@ -68,7 +68,8 @@
 //    }
     
     
-//    NSLog(@"Directory Contents = /n %@",directoryContents);
+     NSLog(@"Directory Contents = /n %@",directoryContents);
+   
     
     
 }
@@ -95,7 +96,6 @@
 {
     return 50.0f;
 }
- 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -105,8 +105,8 @@
     
     if (cell == nil)
     {
-        cell = (FileManagerTableCell*)[[NSBundle mainBundle] loadNibNamed:@"FileManagerTableCell_iPhone" owner:self options:nil];
-        //cell.selectionStyle=UITableViewCellSelectionStyleNone;
+        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"FileManagerTableCell_iPhone" owner:self options:nil];
+        cell = (FileManagerTableCell*)[nib objectAtIndex:0];
     }
     
     NSString *name;
@@ -114,21 +114,18 @@
     cell.nameLbl.text = name;
     
     
-//    cell.nameLbl.text = [[self.diveSitesListArr objectAtIndex:indexPath.row] objectForKey:@"name"];
-//    
-//    NSString *descTxt = [NSString stringWithFormat:@"\"%@\"",[[self.diveSitesListArr objectAtIndex:indexPath.row] objectForKey:@"description"]];
-//    
-//    cell.description.text = descTxt;
-//    
-//    if(indexPath.row == 0)
-//    {
-//        cell.seperatorImg.hidden = YES;
-//    }
-//    
-//    else
-//    {
-//        cell.seperatorImg.hidden = NO;
-//    }
+    NSString *path;
+    [[directoryContents objectAtIndex:indexPath.row] getResourceValue:&path forKey:NSURLPathKey error:nil];
+    
+    cell.typeLbl.text = [path pathExtension];
+    
+    NSString *isDirectory;
+    [[directoryContents objectAtIndex:indexPath.row] getResourceValue:&isDirectory forKey:NSURLIsDirectoryKey error:nil];
+    
+    if ([isDirectory boolValue]){
+        
+         cell.typeLbl.text = @"folder";
+    }
     
     return cell;
     
@@ -136,24 +133,22 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    DGDiveSitesListVC *dgDiveSiteListVc = [[DGDiveSitesListVC alloc]initWithNibName:[DGCommon getNibNameForName:@"DGDiveSitesListVC"] bundle:nil];
-//    
-//    dgDiveSiteListVc.divePointName = [[self.diveSitesListArr objectAtIndex:indexPath.row] objectForKey:@"name"];
-//    
-//    int siteId = indexPath.row+1;
-//    
-//    NSString *querystring = [NSString stringWithFormat:@"select * from dive_points_tbl where site_id = %d;", siteId];
-//    NSLog(@"query string %@",querystring);
-//    
-//    dgDiveSiteListVc.diveSitesListArr = [DGDatabaseHandler fetchDataFromDatabase:querystring];
-//    
-//    [self.navigationController pushViewController:dgDiveSiteListVc animated:YES];
+    // if the tapped row is of folder..
+    NSString *isDirectory;
+    [[directoryContents objectAtIndex:indexPath.row] getResourceValue:&isDirectory forKey:NSURLIsDirectoryKey error:nil];
+    
+    if ([isDirectory boolValue]){
+        
+        NSString *path;
+        [[directoryContents objectAtIndex:indexPath.row] getResourceValue:&path forKey:NSURLPathKey error:nil];
+        
+        FileManagerViewController *fmvc = [[FileManagerViewController alloc] initWithNibName:@"FileManagerViewController_iPhone" bundle:nil];
+        fmvc.path = path;
+        [self.navigationController pushViewController:fmvc animated:YES];
+
+    }
+    
 }
-
-
-
-
-
 
 
 @end

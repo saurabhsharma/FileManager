@@ -2,15 +2,17 @@
 //  FileManagerTableCell.m
 //  FileManager
 //
-//  Created by Saurabh Sharma on 30/12/13.
-//  Copyright (c) 2013 Saurabh Sharma. All rights reserved.
+//  Created by Saurabh Sharma on 02/01/14.
+//  Copyright (c) 2014 Saurabh Sharma. All rights reserved.
 //
 
 #import "FileManagerTableCell.h"
 
 @implementation FileManagerTableCell
+
 @synthesize nameLbl = _nameLbl;
 @synthesize typeImg = _typeImg;
+@synthesize typeLbl = _typeLbl;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
