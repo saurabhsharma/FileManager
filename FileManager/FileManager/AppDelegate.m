@@ -7,19 +7,19 @@
 //
 
 #import "AppDelegate.h"
-
+#import "FileManagerGlobals.h"
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     
-    [self setupFolders];
+   // [self setupFolders];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     
     self.fileManagerVC = [[FileManagerViewController alloc] initWithNibName:@"FileManagerViewController_iPhone" bundle:nil];
-    
+    cutCopyClipboard =[[NSMutableArray alloc] init];
     self.navCtrl = [[UINavigationController alloc] initWithRootViewController:self.fileManagerVC];
     
     [self.window setRootViewController:self.navCtrl];

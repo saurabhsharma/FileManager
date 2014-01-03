@@ -8,7 +8,7 @@
 
 #import "FileManagerViewController.h"
 #import "FileManagerTableCell.h"
-
+#import "FileManagerGlobals.h"
 @interface FileManagerViewController ()
 
 @end
@@ -34,34 +34,51 @@
     
 }
 
+-(void) viewWillAppear:(BOOL)animated{
+    
+    [super viewWillAppear:animated];
+    
+    
+    self.selectedRows       = [[NSMutableArray alloc] init];
+    [self reloadFolderData];
+   
+
+    
+}
+
+-(void) reloadFolderData{
+    
+    NSError * error;
+    
+    NSFileManager *fm = [NSFileManager defaultManager];
+    NSURL *directoryURL = [NSURL fileURLWithPath:self.path];
+    self.directoryContents = [fm contentsOfDirectoryAtURL:directoryURL
+                               includingPropertiesForKeys:[NSArray arrayWithObjects:NSURLPathKey,NSURLNameKey, NSURLIsDirectoryKey, NSURLContentModificationDateKey, nil]
+                                                  options:NSDirectoryEnumerationSkipsHiddenFiles
+                                                    error:&error];
+    
+    NSLog(@"Directory Contents = /n %@",self.directoryContents);
+
+    [self.tblView reloadData];
+}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
     if (!self.path){
         
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         self.path = [paths objectAtIndex:0];
     }
     
-    NSError * error;
+    NSLog(@"self.path = %@",self.path);
     
-    NSFileManager *fm = [NSFileManager defaultManager];
-    NSURL *directoryURL = [NSURL fileURLWithPath:self.path];
-    directoryContents = [fm contentsOfDirectoryAtURL:directoryURL
-                      includingPropertiesForKeys:[NSArray arrayWithObjects:NSURLPathKey,NSURLNameKey, NSURLIsDirectoryKey, NSURLContentModificationDateKey, nil]
-                                         options:NSDirectoryEnumerationSkipsHiddenFiles
-                                           error:&error];
-    
-    NSLog(@"Directory Contents = /n %@",directoryContents);
     
     UIBarButtonItem *optionsBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(optBtnAction:)];
     [optionsBtn setTag:1];
     [self.navigationItem setRightBarButtonItem:optionsBtn];
-   
     
-    self.selectedRows = [[NSMutableArray alloc] init];
     
 }
 
@@ -109,7 +126,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [directoryContents count];
+    return [self.directoryContents count];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -135,17 +152,17 @@
     }
     
     NSString *name;
-    [[directoryContents objectAtIndex:indexPath.row] getResourceValue:&name forKey:NSURLNameKey error:nil];
+    [[self.directoryContents objectAtIndex:indexPath.row] getResourceValue:&name forKey:NSURLNameKey error:nil];
     cell.nameLbl.text = name;
     
     
     NSString *path;
-    [[directoryContents objectAtIndex:indexPath.row] getResourceValue:&path forKey:NSURLPathKey error:nil];
+    [[self.directoryContents objectAtIndex:indexPath.row] getResourceValue:&path forKey:NSURLPathKey error:nil];
     
     cell.typeLbl.text = [path pathExtension];
     
     NSString *isDirectory;
-    [[directoryContents objectAtIndex:indexPath.row] getResourceValue:&isDirectory forKey:NSURLIsDirectoryKey error:nil];
+    [[self.directoryContents objectAtIndex:indexPath.row] getResourceValue:&isDirectory forKey:NSURLIsDirectoryKey error:nil];
     
     if ([isDirectory boolValue]){
         cell.typeLbl.text = @"folder";
@@ -174,12 +191,12 @@
 {
     // if the tapped row is of folder..
     NSString *isDirectory;
-    [[directoryContents objectAtIndex:indexPath.row] getResourceValue:&isDirectory forKey:NSURLIsDirectoryKey error:nil];
+    [[self.directoryContents objectAtIndex:indexPath.row] getResourceValue:&isDirectory forKey:NSURLIsDirectoryKey error:nil];
     
     if ([isDirectory boolValue] && self.toolBar.hidden){
         
         NSString *path;
-        [[directoryContents objectAtIndex:indexPath.row] getResourceValue:&path forKey:NSURLPathKey error:nil];
+        [[self.directoryContents objectAtIndex:indexPath.row] getResourceValue:&path forKey:NSURLPathKey error:nil];
         
         FileManagerViewController *fmvc = [[FileManagerViewController alloc] initWithNibName:@"FileManagerViewController_iPhone" bundle:nil];
         fmvc.path = path;
@@ -202,6 +219,134 @@
     }
     
 }
+
+-(IBAction)cutBtnAction:(id)sender{
+    
+    [self moveSelectedFilesPathInClipboard];
+    cutCopyAction = @"cut";
+    
+}
+
+
+-(IBAction)copyBtnAction:(id)sender{
+
+    [self moveSelectedFilesPathInClipboard];
+    cutCopyAction = @"copy";
+    
+}
+
+
+-(IBAction)pasteBtnAction:(id)sender{
+
+    NSFileManager *filemgr = [NSFileManager defaultManager];
+    
+    for (NSURL *pathURL in cutCopyClipboard) {
+            
+        NSString *sourcePath;
+        [pathURL getResourceValue:&sourcePath forKey:NSURLPathKey error:nil];
+        
+        NSString *fileName;
+        [pathURL getResourceValue:&fileName forKey:NSURLNameKey error:nil];
+        
+        
+        NSString *targetPath = [self.path stringByAppendingPathComponent:fileName];
+        NSLog(@"target file path = %@",targetPath);
+        
+        if ([cutCopyAction isEqualToString:@"cut"]){
+            
+            NSError *err;
+            if ([filemgr moveItemAtPath:sourcePath toPath:targetPath error: &err]  == YES)
+                NSLog (@"Move successful");
+            else
+                NSLog (@"Move failed, error - %@",err.description);
+            
+        } else if ([cutCopyAction isEqualToString:@"copy"]){
+            
+            if ([filemgr copyItemAtPath:sourcePath toPath:targetPath error: NULL]  == YES)
+                NSLog (@"Copy successful");
+            else
+                NSLog (@"Copy failed");
+
+        }
+     
+        
+        [cutCopyClipboard removeAllObjects];
+        cutCopyAction = @"";
+        [self reloadFolderData];
+        
+    }
+    
+}
+
+
+-(IBAction)newFolderBtnAction:(id)sender{
+    
+}
+
+
+-(IBAction)deleteBtnAction:(id)sender{
+    
+    
+    NSMutableArray *selectedRowsForDelete = [[NSMutableArray alloc] init]
+    
+    if ([self.selectedRows count]){
+        
+        [cutCopyClipboard removeAllObjects];
+        
+        for (NSIndexPath *indexPath in self.selectedRows) {
+            [cutCopyClipboard addObject:[self.directoryContents objectAtIndex:indexPath.row]];
+        }
+        
+    }
+    
+    
+    
+    NSFileManager *filemgr = [NSFileManager defaultManager];
+    
+    NSString * allFilesToDelete = @"";
+    for (NSURL *pathURL in cutCopyClipboard) {
+        
+        NSString *sourcePath;
+        [pathURL getResourceValue:&sourcePath forKey:NSURLPathKey error:nil];
+        
+        NSString *fileName;
+        [pathURL getResourceValue:&fileName forKey:NSURLNameKey error:nil];
+        
+        allFilesToDelete = [NSString stringWithFormat:@"%@, %@", allFilesToDelete, fileName];
+        
+//        if ([filemgr removeItemAtPath:@"/tmp/myfile.txt" error: NULL]  == YES)
+//            NSLog (@"Remove successful");
+//        else
+//            NSLog (@"Remove failed");
+//        
+//        
+//        [self reloadFolderData];
+        
+    }
+    
+    NSString *deleteConfirmMsg = [NSString stringWithFormat:@"Are you sure you want to delete %@",allFilesToDelete];
+    
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:deleteConfirmMsg delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil] ;
+    [alertView show];
+
+    
+}
+
+
+-(void) moveSelectedFilesPathInClipboard{
+    
+    if ([self.selectedRows count]){
+        
+        [cutCopyClipboard removeAllObjects];
+
+        for (NSIndexPath *indexPath in self.selectedRows) {
+            [cutCopyClipboard addObject:[self.directoryContents objectAtIndex:indexPath.row]];
+        }
+        
+    }
+    
+}
+
 
 
 @end

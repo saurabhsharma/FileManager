@@ -28,11 +28,31 @@
                     <rect key="frame" x="0.0" y="524" width="320" height="44"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <items>
-                        <barButtonItem title="new folder" id="RSi-NT-etW"/>
-                        <barButtonItem title="cut" id="y60-zJ-IEr"/>
-                        <barButtonItem title="copy" id="1J2-6g-K0h"/>
-                        <barButtonItem title="paste" id="G20-y4-4fH"/>
-                        <barButtonItem title="delete" id="mwO-Io-Mgh"/>
+                        <barButtonItem title="new folder" id="RSi-NT-etW">
+                            <connections>
+                                <action selector="newFolderBtnAction:" destination="-1" id="fRC-jH-CZn"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem title="cut" id="y60-zJ-IEr">
+                            <connections>
+                                <action selector="cutBtnAction:" destination="-1" id="7Yg-AH-QNT"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem title="copy" id="1J2-6g-K0h">
+                            <connections>
+                                <action selector="copyBtnAction:" destination="-1" id="dHU-Ih-XYH"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem title="paste" id="G20-y4-4fH">
+                            <connections>
+                                <action selector="pasteBtnAction:" destination="-1" id="UM6-r9-a1u"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem title="delete" id="mwO-Io-Mgh">
+                            <connections>
+                                <action selector="deleteBtnAction:" destination="-1" id="J3w-nD-XxC"/>
+                            </connections>
+                        </barButtonItem>
                     </items>
                 </toolbar>
             </subviews>
