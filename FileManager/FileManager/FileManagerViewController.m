@@ -112,6 +112,8 @@
 
         [self.toolBar setHidden:YES];
         
+        [self.selectedRows removeAllObjects];
+        
     }
     else {
         
@@ -204,7 +206,7 @@
 
     }
     
-    if (!self.toolBar.hidden){
+    if (!self.toolBar.hidden) {
 
         FileManagerTableCell *cell = (FileManagerTableCell *)[tableView cellForRowAtIndexPath:indexPath];
         if (![self.selectedRows containsObject:indexPath]){
@@ -279,56 +281,110 @@
 }
 
 
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+
+    // delete confirm alert view
+    if (alertView.tag == 1){
+        
+        if (buttonIndex == 1){
+            
+            NSFileManager *filemgr = [NSFileManager defaultManager];
+            
+            if ([self.selectedRows count]){
+                
+                for (NSIndexPath *indexPath in self.selectedRows) {
+                    
+                    NSString *path;
+                    [[self.directoryContents objectAtIndex:indexPath.row] getResourceValue:&path forKey:NSURLPathKey error:nil];
+
+                    NSError *err;
+                    if ([filemgr removeItemAtPath:path error: &err]  == YES)
+                        NSLog (@"Remove successful");
+                    else {
+                        NSLog (@"Remove failed - %@",err.description);
+                        
+                    }
+                    
+                }
+                
+            }
+            
+            [self reloadFolderData];
+            
+        }
+
+    }
+    // new folder name asking alert view
+    else if (alertView.tag == 2) {
+        
+        if (buttonIndex == 1 ){
+            
+            UITextField * alertTextField = [alertView textFieldAtIndex:0];
+            NSLog(@"alerttextfiled - %@",alertTextField.text);
+
+            NSString *targetFolderPath = [self.path stringByAppendingPathComponent:alertTextField.text];
+
+            NSFileManager *filemgr = [NSFileManager defaultManager];
+            
+            if (![filemgr fileExistsAtPath:targetFolderPath]){
+                
+                NSError* error;
+                if(  [[NSFileManager defaultManager] createDirectoryAtPath:dataPath withIntermediateDirectories:NO attributes:nil error:&error])
+                    
+                    else
+                    {
+                        NSLog(@"[%@] ERROR: attempting to write create MyFolder directory", [self class]);
+                        NSAssert( FALSE, @"Failed to create directory maybe out of disk space?");
+                    }
+                
+            }
+            
+            
+            
+            
+            
+            
+        }
+    }
+    
+    
+}
+
+
 -(IBAction)newFolderBtnAction:(id)sender{
+    
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Folder Name?" message:@"" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil] ;
+    alertView.tag = 2;
+    alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
+    [alertView show];
     
 }
 
 
 -(IBAction)deleteBtnAction:(id)sender{
     
-    
-    NSMutableArray *selectedRowsForDelete = [[NSMutableArray alloc] init]
+    NSString * allFilesToDelete = @"";
     
     if ([self.selectedRows count]){
         
-        [cutCopyClipboard removeAllObjects];
-        
         for (NSIndexPath *indexPath in self.selectedRows) {
+            
+            NSString *fileName;
+            [[self.directoryContents objectAtIndex:indexPath.row] getResourceValue:&fileName forKey:NSURLNameKey error:nil];
+            
+            allFilesToDelete = [NSString stringWithFormat:@"%@, %@",allFilesToDelete, fileName];
             [cutCopyClipboard addObject:[self.directoryContents objectAtIndex:indexPath.row]];
+            
         }
-        
-    }
-    
-    
-    
-    NSFileManager *filemgr = [NSFileManager defaultManager];
-    
-    NSString * allFilesToDelete = @"";
-    for (NSURL *pathURL in cutCopyClipboard) {
-        
-        NSString *sourcePath;
-        [pathURL getResourceValue:&sourcePath forKey:NSURLPathKey error:nil];
-        
-        NSString *fileName;
-        [pathURL getResourceValue:&fileName forKey:NSURLNameKey error:nil];
-        
-        allFilesToDelete = [NSString stringWithFormat:@"%@, %@", allFilesToDelete, fileName];
-        
-//        if ([filemgr removeItemAtPath:@"/tmp/myfile.txt" error: NULL]  == YES)
-//            NSLog (@"Remove successful");
-//        else
-//            NSLog (@"Remove failed");
-//        
-//        
-//        [self reloadFolderData];
-        
-    }
-    
-    NSString *deleteConfirmMsg = [NSString stringWithFormat:@"Are you sure you want to delete %@",allFilesToDelete];
-    
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:deleteConfirmMsg delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil] ;
-    [alertView show];
 
+    }
+
+    allFilesToDelete = [allFilesToDelete substringWithRange:NSMakeRange(2, [allFilesToDelete length] - 2)];
+
+    NSString *deleteConfirmMsg = [NSString stringWithFormat:@"Are you sure you want to delete %@",allFilesToDelete];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:deleteConfirmMsg delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil] ;
+    alertView.tag = 1;
+    [alertView show];
     
 }
 
