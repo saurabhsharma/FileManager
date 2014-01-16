@@ -327,36 +327,54 @@
             NSFileManager *filemgr = [NSFileManager defaultManager];
             
             if (![filemgr fileExistsAtPath:targetFolderPath]){
-                
+
                 NSError* error;
-                if(  [[NSFileManager defaultManager] createDirectoryAtPath:dataPath withIntermediateDirectories:NO attributes:nil error:&error])
+                if(  [[NSFileManager defaultManager] createDirectoryAtPath:targetFolderPath withIntermediateDirectories:NO attributes:nil error:&error]){
                     
-                    else
-                    {
-                        NSLog(@"[%@] ERROR: attempting to write create MyFolder directory", [self class]);
-                        NSAssert( FALSE, @"Failed to create directory maybe out of disk space?");
-                    }
+                    [self reloadFolderData];
+                    
+                } else {
+                    
+                    NSLog(@"Error - %d \n Desc - %@ ", [error code], [error description]);
+                    // NSAssert( FALSE, @"Failed to create directory maybe out of disk space?");
+                }
                 
             }
-            
-            
-            
-            
-            
+            else {
+                
+                NSLog(@"Folder already exists");
+                UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"" message:[NSString stringWithFormat:@"Folder \"%@\" already exist. Please choose a different name ",alertTextField.text] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:@"Choose different", nil];
+                [errorAlert setTag:3];
+                [errorAlert show];
+
+            }
             
         }
+        
     }
-    
+    else if (alertView.tag == 3)
+    {
+        
+        [self askForNewFolder];
+        
+    }
     
 }
 
 
 -(IBAction)newFolderBtnAction:(id)sender{
     
+    [self askForNewFolder];
+    
+}
+
+-(void) askForNewFolder {
+
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Folder Name?" message:@"" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil] ;
     alertView.tag = 2;
     alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
     [alertView show];
+
     
 }
 

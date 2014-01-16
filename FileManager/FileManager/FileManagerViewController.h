@@ -31,5 +31,6 @@
 
 -(void) moveSelectedFilesPathInClipboard;
 -(void) reloadFolderData;
+-(void) askForNewFolder;
 
 @end
