@@ -60,6 +60,7 @@
     NSLog(@"Directory Contents = /n %@",self.directoryContents);
 
     [self.tblView reloadData];
+    [self.selectedRows removeAllObjects];
 }
 
 - (void)viewDidLoad
@@ -99,9 +100,7 @@
         [optionsBtn setTag:2];
         [self.navigationItem setRightBarButtonItem:optionsBtn];
         
-        
         [self.toolBar setHidden:NO];
-        
         
     }
     else if ([(UIBarButtonItem *)sender tag] == 2){
@@ -251,7 +250,7 @@
         [pathURL getResourceValue:&fileName forKey:NSURLNameKey error:nil];
         
         
-        NSString *targetPath = [self.path stringByAppendingPathComponent:fileName];
+        NSString *targetPath = [self validateTargetPath:[self.path stringByAppendingPathComponent:fileName]];
         NSLog(@"target file path = %@",targetPath);
         
         if ([cutCopyAction isEqualToString:@"cut"]){
@@ -270,14 +269,41 @@
                 NSLog (@"Copy failed");
 
         }
-     
-        
-        [cutCopyClipboard removeAllObjects];
-        cutCopyAction = @"";
-        [self reloadFolderData];
+      
         
     }
     
+    [cutCopyClipboard removeAllObjects];
+    cutCopyAction = @"";
+    [self reloadFolderData];
+    
+}
+
+-(NSString *) validateTargetPath:(NSString *) path{
+    
+    NSFileManager *filemgr = [NSFileManager defaultManager];
+    
+    BOOL isDir;
+    if (![filemgr fileExistsAtPath:path isDirectory:&isDir]){ // checking if path is valid or not
+        return path;
+    }
+    
+    // if path is not valid... lets do some excercise and make it valid.
+    
+
+    NSString *fileName      = [path lastPathComponent];
+    NSString *parentFolder  = [path stringByDeletingLastPathComponent];
+    
+    NSString *testPath = [parentFolder stringByAppendingPathComponent:[NSString stringWithFormat:@"%@ copy",fileName]];
+    
+    int i = 1;
+    while ([filemgr fileExistsAtPath:testPath]){
+
+        testPath = [parentFolder stringByAppendingPathComponent:[NSString stringWithFormat:@"%@ copy %d",fileName, i]];
+        i++;
+    }
+    
+    return  testPath;
 }
 
 
